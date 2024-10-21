@@ -16,7 +16,7 @@ TodoMaster is a powerful task management application built with Next.js, featuri
 1. Clone the repository:
 
    ```
-   git clone https://github.com/aryan877/todo-master.git
+   git clone https://github.com/hiteshchoudhary/saas-clerk-template.git
    cd role-based-auth
    ```
 
