@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   const { userId } = auth();
 
@@ -14,10 +14,10 @@ export async function PUT(
 
   try {
     const { completed } = await req.json();
-    const todoId = params.id;
+    const { id } = await context.params;  // Resolve the params promise
 
     const todo = await prisma.todo.findUnique({
-      where: { id: todoId },
+      where: { id },
     });
 
     if (!todo) {
@@ -29,7 +29,7 @@ export async function PUT(
     }
 
     const updatedTodo = await prisma.todo.update({
-      where: { id: todoId },
+      where: { id },
       data: { completed },
     });
 
@@ -44,7 +44,7 @@ export async function PUT(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   const { userId } = auth();
 
@@ -53,10 +53,10 @@ export async function DELETE(
   }
 
   try {
-    const todoId = params.id;
+    const { id } = await context.params; // Resolve the params promise
 
     const todo = await prisma.todo.findUnique({
-      where: { id: todoId },
+      where: { id },
     });
 
     if (!todo) {
@@ -68,7 +68,7 @@ export async function DELETE(
     }
 
     await prisma.todo.delete({
-      where: { id: todoId },
+      where: { id },
     });
 
     return NextResponse.json({ message: "Todo deleted successfully" });
